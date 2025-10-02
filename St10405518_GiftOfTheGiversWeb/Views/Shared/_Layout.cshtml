@@ -1,0 +1,226 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gift of the Givers</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ST10241408_GiftOfTheGiversWebApp.styles.css" asp-append-version="true" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">Gift of the Givers</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/VolunteerManagement">Volunteer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/News">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/About">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Contact">Contact</a></li>
+                </ul>
+
+                <ul class="navbar-nav ms-lg-3">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-area="Identity" asp-page="/Account/Logout" class="d-inline">
+                                <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="btn btn-outline-light btn-sm me-2" href="/Identity/Account/Register">Register</a></li>
+                        <li class="nav-item"><a class="btn btn-warning btn-sm" href="/Identity/Account/Login">Login</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main role="main" class="flex-grow-1">
+        <div class="container py-4">
+            @RenderBody()
+
+          
+            <!-- Featured Video Section 
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8">
+                        <h3 class="fw-bold text-center mb-4">Featured Content</h3>  -->
+
+                        <!-- Instagram Embed 1 
+                        <blockquote class="instagram-media"
+                                    data-instgrm-permalink="https://www.instagram.com/reel/DK_3TPQS3P6/?utm_source=ig_web_copy_link"
+                                    data-instgrm-version="14"
+                                    style="background:#FFF; border:0; border-radius:12px; margin:0 auto 2rem auto; max-width:540px; padding:0; width:100%;">
+                        </blockquote>
+
+                        <!-- Instagram Embed 2 
+                        <blockquote class="instagram-media"
+                                    data-instgrm-permalink="https://www.instagram.com/p/DNDgxCYunrm/"
+                                    data-instgrm-version="14"
+                                    style="background:#FFF; border:0; border-radius:12px; margin:0 auto; max-width:540px; padding:0; width:100%;">
+                        </blockquote>
+
+                        <script async src="//www.instagram.com/embed.js"></script>
+                    </div>
+                </div>
+            </div> -->
+
+
+            <!-- News & Articles Section 
+            <div class="container my-5">
+                <h3 class="fw-bold text-center mb-4">Latest News</h3>
+                <div class="row g-4">
+
+                    <!-- News Card 1 
+                    <div class="col-12 col-md-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <img src="~/images/news1.jpg" class="card-img-top rounded" alt="Gift of the Givers Turns 30" style="height:250px; object-fit:cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">Gift of the Givers Turns 30</h5>
+                                <p class="card-text text-muted flex-grow-1">
+                                    Imtiaz Sooliman reflects on South Africa's future crisis aid and the importance of humanitarian support.
+                                </p>
+                                <a href="https://www.news24.com/southafrica/news/gift-of-the-givers-turns-30-imtiaz-sooliman-on-sas-future-crisis-aid-and-emotional-distancing-20220806"
+                                   target="_blank" class="btn btn-warning mt-3 w-100 shadow-sm">
+                                    Read More
+                                </a>
+                            </div>
+                        </div>
+        
+        </div> -->
+
+                    <!-- News Card 2 
+                    <div class="col-12 col-md-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <img src="~/images/news2.jpg" class="card-img-top rounded" alt="Aid to KZN Flood Victims" style="height:250px; object-fit:cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">Aid to KZN Flood Victims</h5>
+                                <p class="card-text text-muted flex-grow-1">
+                                    Engen and Gift of the Givers provide essential support to communities affected by the KwaZulu-Natal floods.
+                                </p>
+                                <a href="https://www.engineeringnews.co.za/article/engen-and-gift-of-the-givers-provide-vital-aid-to-kzn-flood-victims-2025-03-03"
+                                   target="_blank" class="btn btn-warning mt-3 w-100 shadow-sm">
+                                    Read More
+                                </a>
+                            </div>
+                        </div>
+          
+                </div> 
+
+                </div>
+            </div>
+
+        </div>
+            </main> -->
+
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-light py-5 mt-auto">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold">Gift of the Givers</h5>
+                    <p>Providing swift and effective aid to communities affected by disasters across South Africa and beyond.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/Home/About" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="/VolunteerManagement" class="text-light text-decoration-none">Volunteer</a></li>
+                 
+                        <li><a href="/Home/Contact" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <a href="https://facebook.com" class="text-light me-3"><i class="bi bi-facebook fs-4"></i></a>
+                    <a href="https://twitter.com" class="text-light me-3"><i class="bi bi-twitter fs-4"></i></a>
+                    <a href="https://instagram.com" class="text-light me-3"><i class="bi bi-instagram fs-4"></i></a>
+                    <a href="https://linkedin.com" class="text-light"><i class="bi bi-linkedin fs-4"></i></a>
+                </div>
+            </div>
+            <hr class="border-light my-4" />
+            <div class="text-center small">&copy; @DateTime.Now.Year Gift of the Givers Foundation. All Rights Reserved.</div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+
+
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="volunteerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-users me-1"></i>Volunteer Management
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="volunteerDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Dashboard", "AdminVolunteer")">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Volunteers", "AdminVolunteer")">Manage Volunteers</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Tasks", "AdminVolunteer")">Manage Tasks</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("CreateTask", "AdminVolunteer")">Create Task</a></li>
+                    </ul>
+                </li>
+            }
+
+            <!-- Public volunteer registration link -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Register", "AdminVolunteer")">
+                    <i class="fas fa-hand-holding-heart me-1"></i>Become a Volunteer
+                </a>
+            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="volunteerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-users me-1"></i>Volunteer Management
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="volunteerDropdown">
+                        <li><a class="dropdown-item" href="@Url.Action("Dashboard", "AdminVolunteer")">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Volunteers", "AdminVolunteer")">Manage Volunteers</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Tasks", "AdminVolunteer")">Manage Tasks</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("CreateTask", "AdminVolunteer")">Create Task</a></li>
+                    </ul>
+                </li>
+            }
+
+            <!-- Public volunteer registration link -->
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Register", "AdminVolunteer")">
+                    <i class="fas fa-hand-holding-heart me-1"></i>Become a Volunteer
+                </a>
+            </li>
+
+
+
+
+
+</body>
+</html>

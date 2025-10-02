@@ -1,0 +1,211 @@
+﻿@page
+@using St10405518_GiftOfTheGiversWeb.Areas.Identity.Pages.Account;
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+<!-- Hero Section -->
+<div class="register-hero">
+    <div class="container">
+        <h1 class="register-title">Join Our Mission</h1>
+        <p class="register-subtitle">Create your account and start making a difference today</p>
+    </div>
+</div>
+
+<!-- Register Container -->
+<div class="container">
+    <div class="register-container">
+        <div class="register-card fade-in-up">
+            <!-- Logo -->
+            <div class="register-logo floating">
+                <img src="~/images/Disaster Alleviation Foundation Logo-1.png" alt="Gift of the Givers Logo" />
+            </div>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-register">
+                <!-- Form Header -->
+                <div class="form-header">
+                    <h2>Create Your Account</h2>
+                    <hr />
+                </div>
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <!-- Email Field -->
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email">📧 Email Address</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <!-- Username Field -->
+                <div class="form-floating">
+                    <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="username" />
+                    <label asp-for="Input.UserName">👤 Username</label>
+                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" id="password" />
+                    <label asp-for="Input.Password">🔒 Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                    <!-- Password Strength Indicator -->
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                    </div>
+
+                    <!-- Password Requirements -->
+                    <div class="password-requirements" id="passwordRequirements">
+                        <div class="requirement invalid" id="lengthReq">At least 6 characters</div>
+                        <div class="requirement invalid" id="upperReq">One uppercase letter</div>
+                        <div class="requirement invalid" id="lowerReq">One lowercase letter</div>
+                        <div class="requirement invalid" id="numberReq">One number</div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="form-floating">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" id="confirmPassword" />
+                    <label asp-for="Input.ConfirmPassword">✅ Confirm Password</label>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    <div class="text-danger" id="passwordMatchError" style="display: none;">Passwords do not match</div>
+                </div>
+
+                <!-- Register Button -->
+                <button id="registerSubmit" type="submit" class="register-btn">
+                    <i class="fas fa-user-plus me-2"></i> Create Account
+                </button>
+
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Account created successfully! Redirecting...
+                </div>
+
+                <!-- Login Link -->
+                <div class="text-center">
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="login-link">
+                        Already have an account? Sign in
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            fadeElements.forEach(el => {
+                el.classList.add('visible');
+            });
+
+            // Password strength checker
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+            const passwordMatchError = document.getElementById('passwordMatchError');
+
+            passwordInput.addEventListener('input', function() {
+                checkPasswordStrength(this.value);
+                checkPasswordMatch();
+            });
+
+            confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+            function checkPasswordStrength(password) {
+                let strength = 0;
+                const requirements = {
+                    length: password.length >= 6,
+                    upper: /[A-Z]/.test(password),
+                    lower: /[a-z]/.test(password),
+                    number: /[0-9]/.test(password)
+                };
+
+                // Update requirements display
+                document.getElementById('lengthReq').className = requirements.length ? 'requirement valid' : 'requirement invalid';
+                document.getElementById('upperReq').className = requirements.upper ? 'requirement valid' : 'requirement invalid';
+                document.getElementById('lowerReq').className = requirements.lower ? 'requirement valid' : 'requirement invalid';
+                document.getElementById('numberReq').className = requirements.number ? 'requirement valid' : 'requirement invalid';
+
+                // Calculate strength
+                if (requirements.length) strength += 25;
+                if (requirements.upper) strength += 25;
+                if (requirements.lower) strength += 25;
+                if (requirements.number) strength += 25;
+
+                // Update strength bar
+                passwordStrengthBar.className = 'password-strength-bar';
+                passwordStrengthBar.style.width = strength + '%';
+
+                if (strength <= 25) {
+                    passwordStrengthBar.classList.add('strength-weak');
+                } else if (strength <= 50) {
+                    passwordStrengthBar.classList.add('strength-fair');
+                } else if (strength <= 75) {
+                    passwordStrengthBar.classList.add('strength-good');
+                } else {
+                    passwordStrengthBar.classList.add('strength-strong');
+                }
+            }
+
+            function checkPasswordMatch() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (confirmPassword && password !== confirmPassword) {
+                    passwordMatchError.style.display = 'block';
+                } else {
+                    passwordMatchError.style.display = 'none';
+                }
+            }
+
+            // Form submission loading state
+            const registerForm = document.getElementById('registerForm');
+            const registerBtn = document.getElementById('registerSubmit');
+
+            registerForm.addEventListener('submit', function(e) {
+                // Check if passwords match
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    e.preventDefault();
+                    passwordMatchError.style.display = 'block';
+                    confirmPasswordInput.focus();
+                    return;
+                }
+
+                registerBtn.classList.add('btn-loading');
+                registerBtn.disabled = true;
+            });
+
+            // Input focus effects
+            const formInputs = document.querySelectorAll('.form-control');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.parentElement.classList.remove('focused');
+                    }
+                });
+
+                // Check if input has value on load
+                if (input.value) {
+                    input.parentElement.classList.add('focused');
+                }
+            });
+
+            // Add floating animation delay to logo
+            const logo = document.querySelector('.register-logo');
+            logo.style.animationDelay = '0.5s';
+        });
+    </script>
+}
+<a href="#"></a>    

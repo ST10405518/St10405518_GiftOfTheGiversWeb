@@ -1,0 +1,221 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model St10405518_GiftOfTheGiversWeb.Models.IncomingDataModel;
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- Statistics Hero Section -->
+    <div class="statistics-hero">
+        <div class="container text-center">
+            <h1 class="statistics-title">LATEST STATISTICS</h1>
+            <hr class="statistics-divider" />
+            <p class="lead text-muted">Real-time overview of incoming donations and disaster reports</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- GOODS DONATIONS -->
+        <div class="section-header">
+            <h2 class="section-title text-primary">📦 Incoming Goods Donations</h2>
+            <p class="text-muted">Recent contributions of essential goods and supplies</p>
+        </div>
+
+        @if (Model.GoodsDonations.Any())
+        {
+            <div class="stats-grid">
+                @foreach (var goods in Model.GoodsDonations)
+                {
+                    <div class="enhanced-card card-primary fade-in-up">
+                        <div class="card-icon">
+                            <i class="icon ion-ios-gift"></i>
+                        </div>
+                        <h3 class="card-title">@goods.CATEGORY</h3>
+                        <div class="card-text"><strong>ID:</strong> @goods.GOODS_DONATION_ID</div>
+                        <div class="card-text"><strong>Items:</strong> @goods.ITEM_COUNT</div>
+                        <div class="card-text"><strong>Date:</strong> @(goods.DATE?.ToShortDateString() ?? "-")</div>
+                        <div class="card-text"><strong>Donor:</strong> @goods.DONOR</div>
+                        <div class="card-text"><strong>Description:</strong> @goods.DESCRIPTION</div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="icon ion-ios-gift"></i>
+                </div>
+                <h3 class="empty-state-title">No Goods Donations Yet</h3>
+                <p class="empty-state-text">Be the first to contribute essential goods and supplies</p>
+                <a class="btn btn-lg btn-warning" asp-controller="UserGoodsDonations" asp-action="Create">
+                    Donate Goods Now
+                </a>
+            </div>
+        }
+
+        <!-- MONEY DONATIONS -->
+        <div class="section-header">
+            <h2 class="section-title text-success">💰 Incoming Money Donations</h2>
+            <p class="text-muted">Financial contributions making a direct impact</p>
+        </div>
+
+        @if (Model.MoneyDonations.Any())
+        {
+            <div class="stats-grid">
+                @foreach (var money in Model.MoneyDonations)
+                {
+                    <div class="enhanced-card card-success fade-in-up">
+                        <div class="card-icon">
+                            <i class="icon ion-logo-bitcoin"></i>
+                        </div>
+                        <h3 class="card-title">Financial Contribution</h3>
+                        <div class="card-text"><strong>ID:</strong> @money.MONEY_DONATION_ID</div>
+                        <div class="card-text"><strong>Amount:</strong> R @money.AMOUNT</div>
+                        <div class="card-text"><strong>Date:</strong> @(money.DATE?.ToShortDateString() ?? "-")</div>
+                        <div class="card-text"><strong>Donor:</strong> @money.DONOR</div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="icon ion-logo-bitcoin"></i>
+                </div>
+                <h3 class="empty-state-title">No Money Donations Yet</h3>
+                <p class="empty-state-text">Your financial support can save lives and rebuild communities</p>
+                <a class="btn btn-lg btn-warning" asp-controller="UserMoneyDonations" asp-action="Create">
+                    Make a Donation
+                </a>
+            </div>
+        }
+
+        <!-- DISASTERS -->
+        <div class="section-header">
+            <h2 class="section-title text-danger">🚨 Active Disaster Reports</h2>
+            <p class="text-muted">Current situations requiring immediate attention and aid</p>
+        </div>
+
+        @if (Model.Disasters.Any())
+        {
+            <div class="stats-grid">
+                @foreach (var disaster in Model.Disasters)
+                {
+                    <div class="enhanced-card card-danger fade-in-up">
+                        <div class="card-icon">
+                            <i class="icon ion-ios-warning"></i>
+                        </div>
+                        <h3 class="card-title">@disaster.AID_TYPE</h3>
+                        <div class="card-text"><strong>ID:</strong> @disaster.DISTATER_ID</div>
+                        <div class="card-text"><strong>User:</strong> @disaster.USERNAME</div>
+                        <div class="card-text"><strong>Start:</strong> @(disaster.STARTDATE?.ToShortDateString() ?? "-")</div>
+                        <div class="card-text"><strong>End:</strong> @(disaster.ENDDATE?.ToShortDateString() ?? "-")</div>
+                        <div class="card-text"><strong>Location:</strong> @disaster.LOCATION</div>
+                        <div class="card-text">
+                            <strong>Active:</strong>
+                            <span class="badge @(disaster.IsActive == 1 ? "bg-success" : "bg-secondary")">
+                                @(disaster.IsActive == 1 ? "Yes" : "No")
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="icon ion-ios-warning"></i>
+                </div>
+                <h3 class="empty-state-title">No Active Disasters</h3>
+                <p class="empty-state-text">Currently no disaster reports requiring immediate attention</p>
+                <a class="btn btn-lg btn-warning" asp-controller="UserDisasters" asp-action="Create">
+                    Report a Disaster
+                </a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <!-- Public View -->
+    <!-- Hero Section -->
+    <div class="public-hero">
+        <div class="container">
+            <h1 class="hero-main-title">Gift of the Givers</h1>
+            <p class="hero-subtitle">Africa's Premier Disaster Response & Humanitarian Relief Organization</p>
+
+            <!-- Action Buttons -->
+            <div class="row g-4 justify-content-center">
+                <div class="col-12 col-md-4">
+                    <a class="action-btn hover-lift" asp-controller="UserDisasters" asp-action="Create">
+                        🚨 Log a Disaster
+                    </a>
+                </div>
+                <div class="col-12 col-md-4">
+                    <a class="action-btn hover-lift" asp-controller="UserGoodsDonations" asp-action="Create">
+                        📦 Donate Goods
+                    </a>
+                </div>
+                <div class="col-12 col-md-4">
+                    <a class="action-btn hover-lift" asp-controller="UserMoneyDonations" asp-action="Create">
+                        💰 Donate Money
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog-style Images Section -->
+    <div class="blog-images-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="blog-image-container">
+                        <img src="~/images/index.png" class="blog-image" alt="Our Philosophy" />
+                        <div class="blog-image-overlay">
+                            <h3 class="text-white">Our Humanitarian Philosophy</h3>
+                            <p class="text-white mb-0">Delivering hope and dignity to communities in need</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add fade-in animations
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+            el.classList.add('visible');
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.enhanced-card').forEach(el => {
+            observer.observe(el);
+        });
+    });
+</script>

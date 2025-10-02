@@ -1,0 +1,66 @@
+﻿@model List<Volunteer>
+@{
+    ViewData["Title"] = "Volunteer Management";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Volunteer Management</h1>
+        <a href="@Url.Action("Dashboard")" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">All Volunteers</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Skills</th>
+                                <th>Status</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var volunteer in Model)
+                            {
+                                <tr>
+                                    <td>@volunteer.Name</td>
+                                    <td>@volunteer.Email</td>
+                                    <td>@volunteer.PhoneNumber</td>
+                                    <td>@volunteer.Skills</td>
+                                    <td>
+                                        <span class="badge @(volunteer.Status == "Active" ? "bg-success" : "bg-warning")">
+                                            @volunteer.Status
+                                        </span>
+                                    </td>
+                                    <td>@volunteer.RegistrationDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        <a href="@Url.Action("VolunteerDetails", new { id = volunteer.VolunteerID })"
+                                           class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5>No Volunteers Registered</h5>
+                    <p class="text-muted">Volunteers will appear here once they register.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

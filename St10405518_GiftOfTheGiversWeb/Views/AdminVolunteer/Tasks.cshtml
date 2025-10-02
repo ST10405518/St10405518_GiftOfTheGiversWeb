@@ -1,0 +1,87 @@
+﻿@model List<VolunteerTask>
+@{
+    ViewData["Title"] = "Task Management";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Task Management</h1>
+        <div>
+            <a href="@Url.Action("Dashboard")" class="btn btn-secondary me-2">Back to Dashboard</a>
+            <a href="@Url.Action("CreateTask")" class="btn btn-success">Create New Task</a>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var task in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">@task.Title</h5>
+                        <span class="badge @GetStatusBadgeClass(task.Status)">@task.Status</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@task.Description</p>
+                        <div class="mb-2">
+                            <small class="text-muted">
+                                <i class="fas fa-map-marker-alt me-1"></i>@task.TaskLocation
+                            </small>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                @task.StartDate.ToString("MMM dd") - @task.EndDate.ToString("MMM dd, yyyy")
+                            </small>
+                        </div>
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-users me-1"></i>
+                                @task.CurrentVolunteers/@task.RequiredVolunteers volunteers
+                            </small>
+                            <div class="progress mt-1" style="height: 5px;">
+                                <div class="progress-bar" style="width: @((task.CurrentVolunteers * 100) / Math.Max(task.RequiredVolunteers, 1))%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("TaskDetails", new { id = task.TaskID })" class="btn btn-sm btn-primary">
+                                View Details
+                            </a>
+                            <a href="@Url.Action("AssignVolunteer", new { taskId = task.TaskID })" class="btn btn-sm btn-success">
+                                Assign Volunteer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-tasks fa-4x text-muted mb-3"></i>
+            <h4>No Tasks Created</h4>
+            <p class="text-muted mb-4">Get started by creating your first volunteer task.</p>
+            <a href="@Url.Action("CreateTask")" class="btn btn-success btn-lg">
+                <i class="fas fa-plus me-2"></i>Create First Task
+            </a>
+        </div>
+    }
+</div>
+
+@functions {
+    public string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Open" => "bg-success",
+            "In Progress" => "bg-warning",
+            "Completed" => "bg-info",
+            "Cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}

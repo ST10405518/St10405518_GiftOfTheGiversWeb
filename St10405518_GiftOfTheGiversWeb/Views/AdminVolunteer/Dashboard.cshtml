@@ -1,0 +1,131 @@
+﻿@model St10405518_GiftOfTheGiversWeb.Models.ViewModels.AdminDashboardVM
+@{
+    ViewData["Title"] = "Volunteer Management Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Volunteer Management Dashboard</h1>
+        <div>
+            <a href="@Url.Action("CreateTask")" class="btn btn-success">Create New Task</a>
+            <a href="@Url.Action("Volunteers")" class="btn btn-primary">Manage Volunteers</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.TotalVolunteers</h4>
+                            <p>Total Volunteers</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.ActiveTasks</h4>
+                            <p>Active Tasks</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-tasks fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.CompletedTasks</h4>
+                            <p>Completed Tasks</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>@Model.RecentRegistrations.Count</h4>
+                            <p>New Registrations</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-user-plus fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Volunteer Registrations</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentRegistrations.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var volunteer in Model.RecentRegistrations)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">@volunteer.Name</h6>
+                                            <small class="text-muted">@volunteer.Email</small>
+                                        </div>
+                                        <span class="badge bg-success">@volunteer.RegistrationDate.ToString("MMM dd")</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No recent registrations</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Tasks")" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-tasks me-2"></i>View All Tasks
+                        </a>
+                        <a href="@Url.Action("Volunteers")" class="btn btn-outline-success btn-lg">
+                            <i class="fas fa-users me-2"></i>Manage Volunteers
+                        </a>
+                        <a href="@Url.Action("CreateTask")" class="btn btn-outline-info btn-lg">
+                            <i class="fas fa-plus me-2"></i>Create New Task
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
