@@ -319,8 +319,8 @@ This project is developed for educational purposes as part of academic coursewor
 ## 👥 Development Team
 
 - **Student**: ST10405518
-- **Institution**: IIE Varsity College
-- **Course**: BSc in Computer and Information Sciences in Application Development
+- **Email**:st10405518@rcconnect.eud.za
+
 
 ---
 
