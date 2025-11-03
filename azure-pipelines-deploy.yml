@@ -1,0 +1,42 @@
+name: Deploy to Azure
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Build
+  displayName: 'Build and Test'
+  jobs:
+  - job: BuildAndTest
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: '**/*.csproj'
+
+- stage: Deploy
+  displayName: 'Deploy to Azure App Service'
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+        
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'your-azure-subscription'
+        appType: 'webApp'
+        appName: 'giftgivers-app'
+        package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
