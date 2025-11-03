@@ -1,1 +1,8 @@
-﻿
+﻿name: LoadTest-Pipeline
+pool: 
+vmImage: 'windows-latest'
+steps:
+- task: AzureLoadTest@1
+  inputs:
+    loadTestConfigFile: 'loadtest.config.json'
+    testName: 'GiftGivers-LoadTest'

@@ -1,3 +1,21 @@
 {
 
 }
+{
+  "testScenarios": [
+    {
+      "scenarioName": "LoadTest-50Users",
+      "userCount": 50,
+      "durationInMinutes": 5,
+      "testCases": [
+        {
+          "name": "HomePage",
+          "request": {
+            "method": "GET",
+            "url": "https://yourapp.azurewebsites.net/"
+          }
+        }
+      ]
+    }
+  ]
+}
