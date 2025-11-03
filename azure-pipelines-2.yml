@@ -1,0 +1,21 @@
+name: GiftOfTheGivers-StressTest
+
+trigger: none  # Manual trigger only
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: StressTest
+  displayName: '🔥 Stress Testing - 100 Users'
+  jobs:
+  - job: ExecuteStressTest
+    steps:
+    - task: AzureLoadTest@1
+      inputs:
+        loadTestConfigFile: 'loadtest.config.json'
+        testName: 'GiftGivers-StressTest-100Users'
+        loadTestScenario: 'StressTest-100Users'
+        engineInstances: 1
+        runDuration: 600
+      displayName: 'Execute 100 User Stress Test'
