@@ -1,0 +1,27 @@
+name: GiftOfTheGivers-LoadTest
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  azureSubscription: 'azure-loadtest-connection'
+  loadTestResource: 'giftgivers-loadtest'
+
+stages:
+- stage: LoadTest
+  displayName: 'Azure DevOps Load Testing'
+  jobs:
+  - job: LoadTesting
+    steps:
+    - task: AzureLoadTest@1
+      inputs:
+        azureSubscription: $(azureSubscription)
+        loadTestConfigFile: 'loadtest.config.json'
+        loadTestResource: $(loadTestResource)
+        testName: 'GiftGivers-LoadTest'
+        engineInstances: 1
+        runDuration: 300
+        resourceGroup: 'giftgivers-rg'
