@@ -18,16 +18,16 @@ namespace St10405518_GiftOfTheGiversWeb.Controllers
             _context = context;
         }
 
-
         public IActionResult Index()
         {
-            if (@User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated == true) // FIX: Added null check
             {
                 var viewModel = new IncomingDataModel
                 {
-                    GoodsDonations = _context.GoodsDonation.ToList(),
-                    MoneyDonations = _context.MoneyDonation.ToList(),
-                    Disasters = _context.Disaster.ToList()
+                    // FIX: Added null-conditional operators
+                    GoodsDonations = _context.GoodsDonation?.ToList() ?? new List<GoodsDonation>(),
+                    MoneyDonations = _context.MoneyDonation?.ToList() ?? new List<MoneyDonation>(),
+                    Disasters = _context.Disaster?.ToList() ?? new List<Disaster>()
                 };
 
                 return View(viewModel);
@@ -37,6 +37,7 @@ namespace St10405518_GiftOfTheGiversWeb.Controllers
                 return View();
             }
         }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -45,7 +46,6 @@ namespace St10405518_GiftOfTheGiversWeb.Controllers
 
         public IActionResult About()
         {
-
             return View();
         }
 
@@ -53,7 +53,5 @@ namespace St10405518_GiftOfTheGiversWeb.Controllers
         {
             return View();
         }
-
-       
     }
 }

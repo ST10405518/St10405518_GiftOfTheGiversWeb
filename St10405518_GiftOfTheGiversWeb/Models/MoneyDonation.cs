@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace St10405518_GiftOfTheGiversWeb.Models
 {
@@ -10,19 +8,20 @@ namespace St10405518_GiftOfTheGiversWeb.Models
         [Required]
         public int MONEY_DONATION_ID { get; set; }
 
-        public string USERNAME { get; set; }
+        // FIX: Initialize with empty string
+        public string USERNAME { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date")]
-        public DateTime? DATE {get; set;}
+        public DateTime? DATE { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
         [Display(Name = "Amount")]
-        public decimal AMOUNT { get; set;}
+        public decimal AMOUNT { get; set; }
 
         [Display(Name = "Donor")]
-        public string? DONOR { get; set;}
+        public string? DONOR { get; set; }
     }
 }
